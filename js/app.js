@@ -32,6 +32,9 @@ Enemy.prototype.render = function() {
 class Player {
     constructor() {
         this.sprite = 'images/char-boy.png';
+        this.reset();
+    }
+    reset(){
         this.x = 2 * step.width;
         this.y = 5 * step.height;
     }
@@ -60,6 +63,7 @@ class Player {
                   this.y = new_y;
                   if (new_y === 0) {
                     console.log('water');
+                    this.reset();
                   }
               } 
               break;
