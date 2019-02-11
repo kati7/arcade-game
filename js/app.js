@@ -3,28 +3,39 @@ const step = {
     height: 83
 };
 
-// Enemies our player must avoid
-var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
+class Enemy {
+    constructor(x, y, speed) {
+        this.x = x;
+        this.y = y;
+        this.speed = speed;
+        this.init_x = x;
+        // The image/sprite for our enemies, this uses
+        // a helper we've provided to easily load images
+        this.sprite = 'images/enemy-bug.png';
+    }
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
-};
+    // Draw the enemy on the screen, required method for game
+    render() {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-};
+    // Update the enemy's position, required method for game
+    // Parameter: dt, a time delta between ticks
+    update(dt) {
+        // You should multiply any movement by the dt parameter
+        // which will ensure the game runs at the same speed for
+        // all computers.
+        // this.x = this.x + this.speed;
+        this.x = this.x + this.speed * dt;
+        if (this.x > 505) {
+            this.reset();
+        }
+    }
 
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+    reset(){
+        this.x = -1 * step.width;
+    }
+}
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -39,6 +50,7 @@ class Player {
         this.y = 5 * step.height;
     }
     update() {}
+
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
@@ -79,10 +91,11 @@ class Player {
 }
 
 // Now instantiate your objects.
+const enemy_1 = new Enemy(0, 1 * step.height, 100);
+const enemy_2 = new Enemy(300, 3 * step.height, 500);
 // Place all enemy objects in an array called allEnemies
-const allEnemies = [];
+const allEnemies = [enemy_1, enemy_2];
 const player = new Player();
-// Place the player object in a variable called player
 
 
 
