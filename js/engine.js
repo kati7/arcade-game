@@ -27,6 +27,7 @@ var Engine = (function(global) {
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
+    let paused = false;
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -44,7 +45,9 @@ var Engine = (function(global) {
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
-        update(dt);
+        if(!paused) {
+            update(dt);
+        }
         render();
 
         /* Set our lastTime variable which is used to determine the time delta
@@ -79,8 +82,19 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
     }
+
+    function checkCollisions() {
+        for (const enemy of allEnemies) {
+            if (player.y === enemy.y) {
+                if ((player.x >= enemy.x && player.x <= enemy.x + step.width) ||
+                (enemy.x >= player.x && enemy.x <= player.x + step.width)) {
+                    player.reset();
+                }
+            }
+        }
+    }    
 
     /* This is called by the update function and loops through all of the
      * objects within your allEnemies array as defined in app.js and calls
@@ -163,6 +177,26 @@ var Engine = (function(global) {
     function reset() {
         // noop
     }
+
+    function togglePause()
+    {
+        if (!paused)
+        {
+            paused = true;
+        } else if (paused)
+        {
+            paused= false;
+        }
+
+    }
+
+    window.addEventListener('keydown', function (e) {
+        var key = e.keyCode;
+        if (key === 80)// p key
+        {
+            togglePause();
+        }
+    });
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
