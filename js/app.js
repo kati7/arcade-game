@@ -91,10 +91,19 @@ class Player {
 }
 
 // Now instantiate your objects.
-const enemy_1 = new Enemy(0, 1 * step.height, 100);
-const enemy_2 = new Enemy(300, 3 * step.height, 500);
-// Place all enemy objects in an array called allEnemies
-const allEnemies = [enemy_1, enemy_2];
+const allEnemies = [];
+const enemies_no = 5;
+for (let i = 0; i < enemies_no; i++) { 
+    //choose speed between 100 and 500
+    const speed = Math.floor(Math.random() * 400) + 100;
+    //choose y between 1 * step.height and 3 * step.height
+    const y = (Math.floor(Math.random() * 3) + 1) * step.height;
+    //choose x between -500 and 500
+    const x = Math.floor(Math.random() * 1000) - 500;
+
+    const enemy = new Enemy(x, y, speed);
+    allEnemies.push(enemy);
+}
 const player = new Player();
 
 
