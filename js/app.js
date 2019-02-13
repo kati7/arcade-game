@@ -57,33 +57,33 @@ class Player {
     }
 
     handleInput(direction) {
-        let new_x, new_y;
+        let newX, newY;
         switch(direction) {
             case 'left':
-                new_x = this.x - step.width;
-                if (new_x >= 0){
-                    this.x = new_x;
+                newX = this.x - step.width;
+                if (newX >= 0){
+                    this.x = newX;
                 }
                 break;
             case 'right':
-                new_x = this.x + step.width;
-                if (new_x < 505){
-                    this.x = new_x;
+                newX = this.x + step.width;
+                if (newX < 505){
+                    this.x = newX;
                 }
                 break;
             case 'up':
-                new_y = this.y - step.height;
-                if (new_y >= 0) {
-                    this.y = new_y;
-                    if (new_y === 0) {
+                newY = this.y - step.height;
+                if (newY >= 0) {
+                    this.y = newY;
+                    if (newY === 0) {
                         this.gameOver();
                     }
                 } 
                 break;
             case 'down':
-                new_y = this.y + step.height;
-                if (new_y < 6 * step.height) {
-                    this.y = new_y;
+                newY = this.y + step.height;
+                if (newY < 6 * step.height) {
+                    this.y = newY;
                 }
                 break;
         }
@@ -91,14 +91,14 @@ class Player {
 
     gameOver() {
         this.reset();
-        window.openModal();
+        window.openWinnningModal();
     }
 }
 
 // Now instantiate your objects.
 const allEnemies = [];
-const enemies_no = 5;
-for (let i = 0; i < enemies_no; i++) { 
+const ENEMIES_NO = 5;
+for (let i = 0; i < ENEMIES_NO; i++) { 
     //choose speed between 100 and 500
     const speed = Math.floor(Math.random() * 400) + 100;
     //choose y between 1 * step.height and 3 * step.height
@@ -145,6 +145,6 @@ class Modal {
     }
 }
 
-const modal = new Modal(document.querySelector('.modal-overlay'));
-window.openModal = modal.open.bind(modal);
+const winningModal = new Modal(document.querySelector('.modal-overlay'));
+window.openWinnningModal = winningModal.open.bind(winningModal);
 
