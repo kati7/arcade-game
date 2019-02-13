@@ -8,7 +8,6 @@ class Enemy {
         this.x = x;
         this.y = y;
         this.speed = speed;
-        this.init_x = x;
         // The image/sprite for our enemies, this uses
         // a helper we've provided to easily load images
         this.sprite = 'images/enemy-bug.png';
@@ -25,13 +24,13 @@ class Enemy {
         // You should multiply any movement by the dt parameter
         // which will ensure the game runs at the same speed for
         // all computers.
-        // this.x = this.x + this.speed;
         this.x = this.x + this.speed * dt;
         if (this.x > 505) {
             this.reset();
         }
     }
 
+    // Move the enemy to the left side of the board
     reset(){
         this.x = -1 * step.width;
     }
@@ -45,48 +44,54 @@ class Player {
         this.sprite = 'images/char-boy.png';
         this.reset();
     }
+
     reset(){
         this.x = 2 * step.width;
         this.y = 5 * step.height;
     }
+
     update() {}
 
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
+
     handleInput(direction) {
         let new_x, new_y;
         switch(direction) {
             case 'left':
-              new_x = this.x - step.width;
-              if (new_x >= 0){
-                  this.x = new_x;
-              }
-              break;
+                new_x = this.x - step.width;
+                if (new_x >= 0){
+                    this.x = new_x;
+                }
+                break;
             case 'right':
-              new_x = this.x + step.width;
-              if (new_x < 505){
-                  this.x = new_x;
-              }
-              break;
+                new_x = this.x + step.width;
+                if (new_x < 505){
+                    this.x = new_x;
+                }
+                break;
             case 'up':
-              new_y = this.y - step.height;
-              if (new_y >= 0) {
-                  this.y = new_y;
-                  if (new_y === 0) {
-                    console.log('water');
-                    this.reset();
-                  }
-              } 
-              break;
+                new_y = this.y - step.height;
+                if (new_y >= 0) {
+                    this.y = new_y;
+                    if (new_y === 0) {
+                        this.gameOver();
+                    }
+                } 
+                break;
             case 'down':
-              new_y = this.y + step.height;
-              if (new_y < 6 * step.height) {
-                  this.y = new_y;
-              }
-              break;
+                new_y = this.y + step.height;
+                if (new_y < 6 * step.height) {
+                    this.y = new_y;
+                }
+                break;
         }
+    }
 
+    gameOver() {
+        this.reset();
+        window.openModal();
     }
 }
 
@@ -121,4 +126,25 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
+class Modal {
+    constructor(overlay) {
+        this.overlay = overlay;
+        overlay.addEventListener('click', e => {
+            if (e.srcElement.id === this.overlay.id) {
+            this.close();
+            }
+        });
+    }
+
+    open() {
+        this.overlay.classList.remove('is-hidden');
+    }
+  
+    close() {
+        this.overlay.classList.add('is-hidden');
+    }
+}
+
+const modal = new Modal(document.querySelector('.modal-overlay'));
+window.openModal = modal.open.bind(modal);
 
