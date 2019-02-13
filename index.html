@@ -6,12 +6,25 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="is-hidden modal-overlay">
+    <div class="is-hidden modal-overlay" id="winning-modal">
         <div class="modal">
             <span class="button-close">×</span>
             <p class="modal-message">You won!</p>
             <img src="images/Star.png" alt="Winning star">
         </div>
+    </div>
+    <div class="is-hidden modal-overlay" id="choose-character-modal">
+            <div class="modal">
+                <span class="button-close">×</span>
+                <p class="modal-message">Choose your character</p>
+                <div class="characters">
+                    <img src="images/char-boy.png" alt="Boy">
+                    <img src="images/char-cat-girl.png" alt="Cat girl">
+                    <img src="images/char-horn-girl.png" alt="Horn girl">
+                    <img src="images/char-pink-girl.png" alt="Pink girl">
+                    <img src="images/char-princess-girl.png" alt="Princess girl">
+                </div>
+            </div>
     </div>
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>

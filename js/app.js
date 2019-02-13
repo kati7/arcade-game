@@ -45,6 +45,11 @@ class Player {
         this.reset();
     }
 
+    setSprite(sprite) {
+        this.sprite = sprite;
+        this.update();
+    }
+
     reset(){
         this.x = 2 * step.width;
         this.y = 5 * step.height;
@@ -91,13 +96,13 @@ class Player {
 
     gameOver() {
         this.reset();
-        window.openWinnningModal();
+        winningModal.open();
     }
 }
 
 // Now instantiate your objects.
 const allEnemies = [];
-const ENEMIES_NO = 5;
+const ENEMIES_NO = 2;
 for (let i = 0; i < ENEMIES_NO; i++) { 
     //choose speed between 100 and 500
     const speed = Math.floor(Math.random() * 400) + 100;
@@ -110,8 +115,6 @@ for (let i = 0; i < ENEMIES_NO; i++) {
     allEnemies.push(enemy);
 }
 const player = new Player();
-
-
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -129,9 +132,11 @@ document.addEventListener('keyup', function(e) {
 class Modal {
     constructor(overlay) {
         this.overlay = overlay;
+        const closeButton = overlay.querySelector('.button-close')
+        closeButton.addEventListener('click', this.close.bind(this));
         overlay.addEventListener('click', e => {
             if (e.srcElement.id === this.overlay.id) {
-            this.close();
+                this.close();
             }
         });
     }
@@ -145,6 +150,15 @@ class Modal {
     }
 }
 
-const winningModal = new Modal(document.querySelector('.modal-overlay'));
-window.openWinnningModal = winningModal.open.bind(winningModal);
+const winningModal = new Modal(document.querySelector('#winning-modal'));
+const chooseCharacterModal = new Modal(document.querySelector('#choose-character-modal'));
+chooseCharacterModal.open();
 
+const characters = document.querySelector('.characters');
+characters.addEventListener('click', function(evt) {
+    if(evt.target.nodeName.toLowerCase() === 'img') {
+        const sprite = evt.target.getAttribute('src');
+        player.setSprite(sprite);
+        chooseCharacterModal.close();
+    }
+});

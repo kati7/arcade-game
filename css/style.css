@@ -35,6 +35,12 @@ body {
     float: right;
 }
 
+#choose-character-modal img:hover,
+#choose-character-modal img:focus {
+    cursor: pointer;
+    background: lightseagreen;
+}
+
 .modal-message {
     padding-top: 50px;
 }
