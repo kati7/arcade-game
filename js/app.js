@@ -102,32 +102,12 @@ class Player {
 
 // Now instantiate your objects.
 const allEnemies = [];
-const ENEMIES_NO = 2;
-for (let i = 0; i < ENEMIES_NO; i++) { 
-    //choose speed between 100 and 500
-    const speed = Math.floor(Math.random() * 400) + 100;
-    //choose y between 1 * step.height and 3 * step.height
-    const y = (Math.floor(Math.random() * 3) + 1) * step.height;
-    //choose x between -500 and 500
-    const x = Math.floor(Math.random() * 1000) - 500;
-
-    const enemy = new Enemy(x, y, speed);
-    allEnemies.push(enemy);
-}
 const player = new Player();
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down'
-    };
-
-    player.handleInput(allowedKeys[e.keyCode]);
-});
+// Modals for:
+// - choosing the characters at the beginning of the game
+// - displaying information after winning the game
+let focusedElementBeforeModal;
 
 class Modal {
     constructor(overlay) {
@@ -142,23 +122,95 @@ class Modal {
     }
 
     open() {
+        focusedElementBeforeModal = document.activeElement;
         this.overlay.classList.remove('is-hidden');
     }
   
     close() {
         this.overlay.classList.add('is-hidden');
+        focusedElementBeforeModal.focus();
     }
 }
 
 const winningModal = new Modal(document.querySelector('#winning-modal'));
-const chooseCharacterModal = new Modal(document.querySelector('#choose-character-modal'));
+
+const chooseCharacterModalOverlay = document.querySelector('#choose-character-modal');
+const chooseCharacterModal = new Modal(chooseCharacterModalOverlay);
 chooseCharacterModal.open();
+
+const focusableElements = document.querySelectorAll('#choose-character-modal img');
+const firstTabStop = focusableElements[0];
+const lastTabStop = focusableElements[focusableElements.length - 1];
+firstTabStop.focus();
+
+chooseCharacterModalOverlay.addEventListener('keydown', function(e) {
+    console.log(e.keyCode);
+    // TAB key pressed
+    if (e.keyCode === 9) {
+        // SHIFT + TAB keys pressed
+        if (e.shiftKey) {
+            if (document.activeElement === firstTabStop) {
+                e.preventDefault();
+                lastTabStop.focus();
+            }
+        // just TAB key pressed
+        } else {
+            if (document.activeElement === lastTabStop) {
+                e.preventDefault();
+                firstTabStop.focus();
+            }
+        }
+    // ENTER key pressed
+    } else if (e.keyCode === 13) {
+        if (document.activeElement.nodeName.toLowerCase() === 'img') {
+            startGame(document.activeElement);
+        }
+    }
+});
 
 const characters = document.querySelector('.characters');
 characters.addEventListener('click', function(evt) {
     if(evt.target.nodeName.toLowerCase() === 'img') {
-        const sprite = evt.target.getAttribute('src');
-        player.setSprite(sprite);
-        chooseCharacterModal.close();
+        startGame(evt.target);
     }
 });
+
+function startGame(element) {
+    chooseCharacter(element);
+
+    // This listens for key presses and sends the keys to your
+    // Player.handleInput() method. You don't need to modify this.
+    document.addEventListener('keyup', function(e) {
+        var allowedKeys = {
+            37: 'left',
+            38: 'up',
+            39: 'right',
+            40: 'down'
+        };
+
+        player.handleInput(allowedKeys[e.keyCode]);
+    });
+
+    generateEnemies();
+}
+
+function generateEnemies() {
+    const ENEMIES_NO = 2;
+    for (let i = 0; i < ENEMIES_NO; i++) {
+        //choose speed between 100 and 500
+        const speed = Math.floor(Math.random() * 400) + 100;
+        //choose y between 1 * step.height and 3 * step.height
+        const y = (Math.floor(Math.random() * 3) + 1) * step.height;
+        //choose x between -500 and 500
+        const x = Math.floor(Math.random() * 1000) - 500;
+        const enemy = new Enemy(x, y, speed);
+        allEnemies.push(enemy);
+    }
+}
+
+function chooseCharacter(element) {
+    const sprite = element.getAttribute('src');
+    player.setSprite(sprite);
+    chooseCharacterModal.close();
+}
+
