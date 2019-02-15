@@ -144,7 +144,6 @@ const lastTabStop = focusableElements[focusableElements.length - 1];
 firstTabStop.focus();
 
 chooseCharacterModalOverlay.addEventListener('keydown', function(e) {
-    console.log(e.keyCode);
     // TAB key pressed
     if (e.keyCode === 9) {
         // SHIFT + TAB keys pressed
@@ -196,7 +195,7 @@ function startGame(element) {
 
 function generateEnemies() {
     allEnemies = [];
-    const ENEMIES_NO = 2;
+    const ENEMIES_NO = 5;
     for (let i = 0; i < ENEMIES_NO; i++) {
         //choose speed between 100 and 500
         const speed = Math.floor(Math.random() * 400) + 100;
