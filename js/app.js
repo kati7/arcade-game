@@ -101,7 +101,7 @@ class Player {
 }
 
 // Now instantiate your objects.
-const allEnemies = [];
+let allEnemies = [];
 const player = new Player();
 
 // Modals for:
@@ -195,6 +195,7 @@ function startGame(element) {
 }
 
 function generateEnemies() {
+    allEnemies = [];
     const ENEMIES_NO = 2;
     for (let i = 0; i < ENEMIES_NO; i++) {
         //choose speed between 100 and 500
@@ -213,4 +214,3 @@ function chooseCharacter(element) {
     player.setSprite(sprite);
     chooseCharacterModal.close();
 }
-

@@ -20,13 +20,13 @@ var Engine = (function(global) {
      */
     var doc = global.document,
         win = global.window,
-        canvas = doc.createElement('canvas'),
+        canvas = doc.getElementById('board'),
         ctx = canvas.getContext('2d'),
         lastTime;
 
-    canvas.width = 505;
-    canvas.height = 606;
-    doc.body.appendChild(canvas);
+    const resetButton = doc.querySelector('.reset .fa');
+    resetButton.addEventListener('click', reset);
+
     let paused = false;
 
     /* This function serves as the kickoff point for the game loop itself
@@ -66,7 +66,6 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        reset();
         lastTime = Date.now();
         main();
     }
@@ -175,7 +174,8 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+        player.reset();
+        generateEnemies();
     }
 
     function togglePause()

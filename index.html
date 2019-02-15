@@ -3,9 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Effective JavaScript: Frogger</title>
+    <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <div class="content">
+        <canvas id="board" width="505" height="606"></canvas>
+        <div class="reset">
+            <i class="fa fa-repeat"></i>
+        </div> 
+    </div>
     <div class="is-hidden modal-overlay" id="winning-modal">
         <div class="modal">
             <span class="button-close">×</span>

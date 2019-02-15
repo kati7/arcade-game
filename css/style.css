@@ -44,3 +44,11 @@ body {
 .modal-message {
     padding-top: 50px;
 }
+
+.reset {
+    margin: 0 auto;
+}
+
+.reset .fa {
+    cursor: pointer;
+}
